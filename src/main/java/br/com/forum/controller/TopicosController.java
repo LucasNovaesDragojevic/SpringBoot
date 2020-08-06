@@ -1,22 +1,29 @@
 package br.com.forum.controller;
 
-import java.util.Arrays;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.forum.dto.TopicoDto;
-import br.com.forum.model.Curso;
-import br.com.forum.model.Topico;
+
+import br.com.forum.repository.TopicoRepository;
 
 @RestController
 public class TopicosController 
 {
+	@Autowired
+	private TopicoRepository topicoRepository;
+
 	@RequestMapping("topicos")
-	public List<TopicoDto> lista()
+	public List<TopicoDto> lista(String cursoNome)
 	{
-		Topico topico = new Topico("Dúvida de spring", "Como funciona arquitetura do Spring?", new Curso("Spring Boot", "Programação"));
-		return TopicoDto.converter(Arrays.asList(topico, topico, topico));
+		System.out.println(cursoNome);
+		if (cursoNome == null)
+		{
+			return TopicoDto.converter(topicoRepository.findAll());
+		}
+		return TopicoDto.converter(topicoRepository.findByCursoNome(cursoNome));		
 	}
 }
