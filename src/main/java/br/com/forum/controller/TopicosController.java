@@ -6,6 +6,7 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
@@ -57,6 +58,7 @@ public class TopicosController
 	}
 	
 	@PostMapping
+	@CacheEvict(value = "listaTopicos", allEntries = true)
 	public ResponseEntity<TopicoDto> cadastrar(@RequestBody @Valid TopicoForm form, UriComponentsBuilder uriBuilder)
 	{
 		
@@ -76,6 +78,7 @@ public class TopicosController
 	}
 	
 	@PutMapping("{id}")
+	@CacheEvict(value = "listaTopicos", allEntries = true)
 	public ResponseEntity<TopicoDto> atualizar(@PathVariable Long id, @RequestBody @Valid AtualizacaoTopicoForm form)
 	{
 		Optional<Topico> optional = topicoRepository.findById(id);
@@ -88,6 +91,7 @@ public class TopicosController
 	}
 	
 	@DeleteMapping("{id}")
+	@CacheEvict(value = "listaTopicos", allEntries = true)
 	public ResponseEntity<?> remover(@PathVariable Long id)
 	{
 		Optional<Topico> optional = topicoRepository.findById(id);
