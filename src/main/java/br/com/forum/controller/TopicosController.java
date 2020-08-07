@@ -8,8 +8,8 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -43,9 +43,8 @@ public class TopicosController
 	private CursoRepository cursoRepository;
 	
 	@GetMapping
-	public Page<TopicoDto> lista(@RequestParam(required = false) String cursoNome, @RequestParam Integer pagina, @RequestParam Integer quantidade, @RequestParam String ordenacao)
+	public Page<TopicoDto> lista(@RequestParam(required = false) String cursoNome, @PageableDefault(page = 0, size = 10, sort = "id", direction = Direction.DESC) Pageable paginacao)
 	{
-		Pageable paginacao = PageRequest.of(pagina, quantidade, Direction.ASC, ordenacao);
 		if (cursoNome == null)
 		{
 			Page<Topico> topicos = topicoRepository.findAll(paginacao);
