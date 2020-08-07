@@ -6,6 +6,7 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
@@ -43,6 +44,7 @@ public class TopicosController
 	private CursoRepository cursoRepository;
 	
 	@GetMapping
+	@Cacheable(value = "listaTopicos")
 	public Page<TopicoDto> lista(@RequestParam(required = false) String cursoNome, @PageableDefault(page = 0, size = 10, sort = "id", direction = Direction.DESC) Pageable paginacao)
 	{
 		if (cursoNome == null)
